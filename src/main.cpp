@@ -182,6 +182,15 @@ class $modify(TrainerPlayLayer, PlayLayer) {
     void update(float dt) {
         PlayLayer::update(dt);
         g_recorder.tickFrame();
+
+        // Keep the player-position line glued to the icon's center X, and
+        // let the HUD pick up live setting changes (master opacity etc.).
+        if (g_currentHud) {
+            if (auto* p1 = this->m_player1) {
+                g_currentHud->updatePlayerLineX(p1->getPositionX());
+            }
+            g_currentHud->maybeRefreshFromSettings(dt);
+        }
     }
 
     CheckpointObject* markCheckpoint() {
@@ -431,5 +440,5 @@ class $modify(TrainerPauseLayer, PauseLayer) {
 };
 
 $on_mod(Loaded) {
-    log::info("Reclick loaded (v1.0.0-alpha.2)");
+    log::info("Reclick loaded (v1.0.0-alpha.3)");
 }
